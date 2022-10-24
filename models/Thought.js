@@ -1,9 +1,13 @@
 const { Schema, model } = require('mongoose');
+const dayjs = require('dayjs')
 
 //Schema to create reaction subdocument for thought
 const reactionSchema = new Schema(
     {
-        reactionId: {},
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types
+        },
         reactionBody: {},
         username: {},
         createdAt: {}
@@ -18,9 +22,21 @@ const reactionSchema = new Schema(
 //Schema to create thought model
 const thoughtSchema = new Schema(
     {
-        thoughtText: {},
-        createdAt: {},
-        username: {},
+        thoughtText: {
+            type: String,
+            required: true,
+            minlength: 1,
+            maxlength: 280,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: (createdAtDate) => dayjs(createdAtDate).format('DD MMM YYYY [at] h:mm A')
+        },
+        username: {
+            type: String,
+            required: true,
+        },
         reactions: [[reactionSchema]]
     },
     {
