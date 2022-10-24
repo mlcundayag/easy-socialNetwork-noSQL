@@ -6,11 +6,22 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Types
+            default: () => new Types.Object(),
         },
-        reactionBody: {},
-        username: {},
-        createdAt: {}
+        reactionBody: {
+            type: String,
+            required: true,
+            maxlength: 280
+        },
+        username: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: (createdAtDate) => dayjs(createdAtDate).format('DD MMM YYYY [at] h:mm A')
+        }
     },
     {
         toJSON: {
