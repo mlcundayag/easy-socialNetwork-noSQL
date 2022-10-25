@@ -1,16 +1,6 @@
 const router = require('express').Router();
 const { User, Thought } = require('../../models');
 
-// const {
-//    getUsers,
-//    getSingleUser,
-//    createUser,
-//    updateUser,
-//    removeUser,
-//    addFriend,
-//    removeFriend
-// } = require('../../controllers/userController')
-
 //GET: /api/users
 router.get('/', async (req, res) => {
     try {
@@ -86,7 +76,7 @@ router.delete('/:userId', async (req, res) => {
             return res.status(404).json({ message: "No user with this ID... Try again!"})
         } 
         await Thought.deleteMany({ _id: { $in: removeUser.thoughts }})
-        return res.status(200).json({ message: `Successfully deleted userId: ${req.params.userId} and its associated thoughts!`})
+        return res.status(200).json({ message: `Successfully deleted user with id: ${req.params.userId} and its associated thoughts!`})
     }
     catch (err) {
         console.log(err)
@@ -94,10 +84,51 @@ router.delete('/:userId', async (req, res) => {
     }
 })
 
-// // /api/users/:userId
-// router.route('/:userId').get(getSingleUser).put(updateUser).delete(removeUser);
+//POST: /api/users/:userId/friends/:friendsId
+router.post('/:userId/friends/:friendId', async (req, res) => {
+    try{
+        const addFriend = User.findOneAndUpdate({ 
+            _id: req.params.userId
+        }, 
+        {
+          $addToSet: { friends: req.params.friendId}  
+        }, 
+        {
+            new: true,
+            runValidators: true
+        }
+        )
+        if(!addFriend){
+            return res.status(404).json({ message: "No user with this ID... Try again!"})
+        } res.status(200).json(addFriend)
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+})
 
-// // /api/users/:userId/friends/:friendsId
-// router.route('/:userId/friends/:friendsId').post(addFriend).delete(removeFriend)
+//DELETE: /api/users/:userId/friends/:friendsId
+router.post('/:userId/friends/:friendsId', async (req, res) => {
+    try{
+        const removeFriend = User.findOneAndDelete({ 
+            _id: req.params.userId
+        }, 
+        {
+          $pull: { friends: req.params.friendsId}  
+        }, 
+        {
+            new: true
+        });
+        if(!removeFriend){
+            return res.status(404).json({ message: "No user with this ID... Try again!"})
+        } 
+        res.status(200).json({ message: `Successfully deleted friend with id: ${req.params.friendsId}... You are no longer friends!`})
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+})
 
 module.exports = router
