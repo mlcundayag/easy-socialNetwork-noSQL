@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const { ifError } = require('assert')
 const { User, Thought } = require('../../models')
 
 //GET: api/thougths
@@ -67,6 +68,30 @@ router.put('/:thoughtId', async (req, res) => {
         if (!updateThought) {
             return res.status(404).json({ message: "No thought with this Id... Try again!" })
         } res.status(200).json(updateThought)
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }  
+})
+
+router.delete('/:thoughtId', async (req, res) => {
+    try{
+        const removeThought = await Thought.findOneAndRemove({ _id: req.params.thoughtId })
+        if(!removeThought) {
+            return res.status(404).json({ message: "No thought with this Id... Try again!" })
+        } const userData = await User.findOneAndUpdate({
+            thoughts: req.params.thoughtId
+        }, 
+        {
+            $pull: { thoughts: req.params.thoughtId }
+        }, 
+        {
+            new: true
+        });
+        if(!userData){
+            return res.status(404).json({ message: "No user with this ID... Try again!"})
+        } return res.status(200).json({ message: `Successfully deleted thought with id: ${req.params.thoughtId}`})
     }
     catch (err) {
         console.log(err)
