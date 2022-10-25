@@ -6,9 +6,9 @@
 
 In this challenge I was tasked to create an API for a social network web app which allow users to add friends, add thoughts and to react on those thoughts. 
 
-I primarily used ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) to set up my routes and ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white) as my ```noSQL``` database and connect it to my server and routes through ```mongoose```. I used ```Day.js``` to handle timestamps.
+I primarily used ```Express.js``` to set up my routes and ```MongoDB``` as my ```noSQL``` database and connect it to my server and routes through ```mongoose```. I used ```Day.js``` to handle timestamps.
 
-Lastly, I used ![Insomnia](https://img.shields.io/badge/Insomnia-black?style=for-the-badge&logo=insomnia&logoColor=5849BE) to test all my routes.
+Lastly, I used ```insomnia``` to test all my routes.
 
 I successfully created all the routes without any errors. 
 
