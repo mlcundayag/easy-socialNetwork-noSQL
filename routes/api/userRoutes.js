@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 //POST: /api/users
 router.post('/', async (req, res) => {
     try {
-        const createUser = await User.create(req.body);
+        const createUser = await User.create(req.body)
         res.status(200).json(createUser)
     }
     catch (err) {
