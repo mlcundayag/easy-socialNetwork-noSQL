@@ -87,7 +87,7 @@ router.delete('/:userId', async (req, res) => {
 //POST: /api/users/:userId/friends/:friendsId
 router.post('/:userId/friends/:friendId', async (req, res) => {
     try{
-        const addFriend = User.findOneAndUpdate({ 
+        const addFriend = await User.findOneAndUpdate({ 
             _id: req.params.userId
         }, 
         {
@@ -109,13 +109,13 @@ router.post('/:userId/friends/:friendId', async (req, res) => {
 })
 
 //DELETE: /api/users/:userId/friends/:friendsId
-router.post('/:userId/friends/:friendsId', async (req, res) => {
+router.delete('/:userId/friends/:friendId', async (req, res) => {
     try{
-        const removeFriend = User.findOneAndDelete({ 
+        const removeFriend = await User.findOneAndUpdate({ 
             _id: req.params.userId
         }, 
         {
-          $pull: { friends: req.params.friendsId}  
+          $pull: { friends: req.params.friendId}  
         }, 
         {
             new: true
@@ -123,7 +123,7 @@ router.post('/:userId/friends/:friendsId', async (req, res) => {
         if(!removeFriend){
             return res.status(404).json({ message: "No user with this ID... Try again!"})
         } 
-        res.status(200).json({ message: `Successfully deleted friend with id: ${req.params.friendsId}... You are no longer friends!`})
+        res.status(200).json({ message: `Successfully deleted friend with id: ${req.params.friendId}... You are no longer friends!`})
     }
     catch (err) {
         console.log(err)

@@ -40,6 +40,7 @@ router.post('/', async (req, res) => {
     }
 })
 
+//GET: api/thoughts/:thoughtId
 router.get('/:thoughtId', async (req, res) => {
     try{
         const getSingleThought = await Thought.findOne({_id: req.params.thoughtId});
@@ -53,6 +54,7 @@ router.get('/:thoughtId', async (req, res) => {
     }
 })
 
+//PUT: api/thoughts/:thoughtId
 router.put('/:thoughtId', async (req, res) => {
     try{
         const updateThought = await Thought.findOneAndUpdate({
@@ -75,6 +77,7 @@ router.put('/:thoughtId', async (req, res) => {
     }  
 })
 
+//DELETE: api/thoughts/:thoughtId
 router.delete('/:thoughtId', async (req, res) => {
     try{
         const removeThought = await Thought.findOneAndRemove({ _id: req.params.thoughtId })
@@ -97,6 +100,52 @@ router.delete('/:thoughtId', async (req, res) => {
         console.log(err)
         res.status(500).json(err)
     }  
+})
+
+//POST: api/thoughts/:thoughtId/reactions
+router.post('/:thoughtId/reactions', async (req, res) => {
+    try{
+        const addReaction = await Thought.findOneAndUpdate({ 
+            _id: req.params.thoughtId
+        },
+        {
+            $addToSet: { reactions: req.body }
+        },
+        {
+            new: true,
+            runValidators: true
+        });
+        if(!addReaction){
+            return res.status(404).json({ message: "No thought with this Id... Try again!" })
+        } res.status(200).json(addReaction)
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }  
+})
+
+//DELETE: api/thoughts/:thoughtId/reactions
+router.delete('/:thoughtId/reactions/:reactionId', async (req, res) =>{
+    try{
+        const removeReaction = await Thought.findOneAndUpdate({ 
+            _id: req.params.thoughtId
+        },
+        {
+            $pull: { reactions: { _id: req.params.reactionId } }
+        },
+        {
+            new: true,
+            runValidators: true
+        });
+        if(!removeReaction){
+            return res.status(404).json({ message: "No thought with this Id... Try again!" })
+        } return res.status(200).json({ message: `Successfully deleted reaction with id: ${req.params.reactionId}`})
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    } 
 })
 
 
