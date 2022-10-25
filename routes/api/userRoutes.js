@@ -11,16 +11,13 @@ const { User } = require('../../models')
 //    removeFriend
 // } = require('../../controllers/userController')
 
-// /api/users/
-// router.route('/')
-
 //GET: /api/users
 router.get('/', async (req, res) => {
     try{
         const getAllUsers = await User.find({})
         .select("-__v")
-        // .populate("friends")
-        // .populate("thoughts")
+        .populate("friends")
+        .populate("thoughts")
         res.status(200).json(getAllUsers)
     }
     catch (err) {
@@ -37,6 +34,22 @@ router.post('/', async (req, res) => {
     }
     catch (err) {
         console.log(err)
+        res.status(500).json(err)
+    }
+})
+
+//GET: /api/users/userID
+router.get('/:userId', async (req, res) => {
+    try{
+        const getSingleUser = await User.findOne({ _id: req.params.userId })
+        .select("-__v")
+        .populate('friends')
+        .populate('thoughts')
+        if(!getSingleUser) {
+            return res.status(404).json({ message: "No user with this ID"})
+        } res.status(200).json(getSingleUser)
+    }
+    catch (err) {
         res.status(500).json(err)
     }
 })

@@ -7,8 +7,9 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 //express middleware
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 
 //use route
