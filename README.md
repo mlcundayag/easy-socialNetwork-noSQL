@@ -39,13 +39,13 @@ I successfully created all the routes without any errors.
 
 ## Screenshots
 
-![screenshot](/public/Screenshot.png)
+![screenshot](/public/img/insomnia-screenshot.png)
 
 
 ## Links
 
 1. [GitHub](https://github.com/mlcundayag/easy-socialNetwork-noSQL)
-2. [Video]
+2. [Video](https://drive.google.com/file/d/1ydJ6-6SQCySSD8ezElY7RoeISyFJI8GQ/view)
 
 
   

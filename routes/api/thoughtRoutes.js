@@ -113,7 +113,6 @@ router.post('/:thoughtId/reactions', async (req, res) => {
         },
         {
             new: true,
-            runValidators: true
         });
         if(!addReaction){
             return res.status(404).json({ message: "No thought with this Id... Try again!" })
